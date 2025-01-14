@@ -6,46 +6,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Electronics Store</title>
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/responsive.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/products.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <span class="logo-icon"><i class="fas fa-bolt"></i></span>
-                <span class="logo-text">TechHub</span>
+    <header class="glass-card">
+        <nav>
+            <div class="logo floating">
+                <a href="index.html">Electronics Store</a>
             </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="products.html" class="nav-link active"><i class="fas fa-store"></i> Products</a></li>
-                <li><a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Cart</a></li>
-                <li><a href="contact.html" class="nav-link"><i class="fas fa-envelope"></i> Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <main class="products-container">
-        <div class="page-header">
-            <h1>Our Products</h1>
-            <div class="filters">
-                <button class="filter-btn active">All</button>
-                <button class="filter-btn">Laptops</button>
-                <button class="filter-btn">Phones</button>
-                <button class="filter-btn">Accessories</button>
+            <div class="nav-center">
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="products.html" class="active">Products</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
             </div>
-        </div>
+            <div class="nav-right">
+                <div class="search-box">
+                    <input type="text" placeholder="Search products...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <a href="cart.html" class="cart-icon" data-count="0">
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
+            </div>
+        </nav>
+    </header>
 
-        <div id="product-list" class="product-grid">
-            <!-- Products will be dynamically loaded here -->
-        </div>
+    <main>
+        <section class="products-section">
+            <div class="filter-sidebar">
+                <h3>Categories</h3>
+                <div class="filter-group">
+                    <label class="filter-item">
+                        <input type="checkbox" name="category" value="smartphones">
+                        Smartphones
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="category" value="laptops">
+                        Laptops
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="category" value="accessories">
+                        Accessories
+                    </label>
+                </div>
+
+                <h3>Price Range</h3>
+                <div class="price-range">
+                    <input type="range" min="0" max="10000" value="5000" class="price-slider">
+                    <div class="price-inputs">
+                        <input type="number" class="min-price" placeholder="Min">
+                        <input type="number" class="max-price" placeholder="Max">
+                    </div>
+                </div>
+
+                <button class="apply-filters">Apply Filters</button>
+            </div>
+
+            <div class="products-container">
+                <div class="products-header">
+                    <h2>All Products</h2>
+                    <div class="sort-options">
+                        <select id="sort-by">
+                            <option value="featured">Featured</option>
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="product-grid" class="product-grid">
+                    <!-- Products will be dynamically loaded here -->
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="modern-footer">
-        <p>&copy; 2023 Electronics Store. All rights reserved.</p>
+    <!-- Product Modal -->
+    <div class="modal" id="product-modal">
+        <div class="modal-content">
+            <button class="modal-close">&times;</button>
+            <div class="modal-body">
+                <div class="product-detail-grid">
+                    <div class="product-detail-image">
+                        <img src="" alt="" id="modal-product-image">
+                    </div>
+                    <div class="product-detail-info">
+                        <h2 id="modal-product-name"></h2>
+                        <div class="price" id="modal-product-price"></div>
+                        <p class="description" id="modal-product-description"></p>
+                        <div class="product-actions">
+                            <div class="quantity">
+                                <button class="qty-btn" data-action="decrease">-</button>
+                                <input type="number" value="1" min="1" max="99">
+                                <button class="qty-btn" data-action="increase">+</button>
+                            </div>
+                            <button class="add-to-cart-btn">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Your trusted source for the latest electronics and accessories.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <p><a href="index.html">Home</a></p>
+                <p><a href="products.html">Products</a></p>
+                <p><a href="cart.html">Cart</a></p>
+                <p><a href="contact.html">Contact</a></p>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Info</h3>
+                <p><i class="fas fa-phone"></i> +1 234 567 890</p>
+                <p><i class="fas fa-envelope"></i> info@electronics.com</p>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Street, City, Country</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Electronics Store. All rights reserved.</p>
+        </div>
     </footer>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-bottom-nav">
+        <a href="./../../../index.html"><i class="fas fa-home"></i><span>Home</span></a>
+        <a href="#" class="active"><i class="fas fa-store"></i><span>Products</span></a>
+        <a href="cart.html" data-count="0"><i class="fas fa-shopping-cart"></i><span>Cart</span></a>
+        <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
+    </nav>
+
     <script src="../js/main.js"></script>
     <script src="../js/products.js"></script>
 </body>
