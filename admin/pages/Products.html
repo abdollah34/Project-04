@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products Management | Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/admin/src/styles/products.css">
+    <style>
+
+    </style>
+</head>
+
+<body>
+    <!-- Rain effect div -->
+    <div class="rain"></div>
+
+    <!-- Add sidebar navigation -->
+    <div class="sidebar">
+        <div class="logo">Store Admin</div>
+        <nav>
+            <a href="Dashboard.html" class="nav-link">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="Products.html" class="nav-link active">
+                <i class="fas fa-box"></i>
+                <span>Products</span>
+            </a>
+            <a href="Orders.html" class="nav-link">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Orders</span>
+            </a>
+            <a href="Customers.html" class="nav-link">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="Analytics.html" class="nav-link">
+                <i class="fas fa-chart-bar"></i>
+                <span>Analytics</span>
+            </a>
+            <a href="#" class="nav-link text-danger" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+    </div>
+
+    <div class="main-content">
+        <div class="header-actions">
+            <h1>Products Management</h1>
+            <button class="add-product-btn" onclick="openAddProductModal()">
+                <i class="fas fa-plus"></i>
+                Add New Product
+            </button>
+        </div>
+
+        <div class="filters-section">
+            <div class="filters-grid">
+                <input type="text" class="filter-input" id="searchInput" placeholder="Search products..." onkeyup="filterProducts()">
+                <select class="filter-input" id="categoryFilter" onchange="filterProducts()">
+                    <option value="">All Categories</option>
+                    <option value="smartphones">Smartphones</option>
+                    <option value="laptops">Laptops</option>
+                    <option value="desktops">Desktop PCs</option>
+                    <optgroup label="PC Components">
+                        <option value="processors">Processors</option>
+                        <option value="graphics-cards">Graphics Cards</option>
+                        <option value="motherboards">Motherboards</option>
+                        <option value="ram">RAM</option>
+                        <option value="storage">Storage</option>
+                        <option value="power-supply">Power Supply</option>
+                    </optgroup>
+                </select>
+                <select class="filter-input" id="brandFilter" onchange="filterProducts()">
+                    <option value="">All Brands</option>
+                    <option value="apple">Apple</option>
+                    <option value="samsung">Samsung</option>
+                    <option value="asus">ASUS</option>
+                    <option value="msi">MSI</option>
+                    <option value="lenovo">Lenovo</option>
+                    <option value="hp">HP</option>
+                    <option value="dell">Dell</option>
+                </select>
+                <select class="filter-input" id="sortFilter" onchange="filterProducts()">
+                    <option value="">Sort By</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="newest">Newest First</option>
+                    <option value="bestselling">Best Selling</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="products-grid" id="productsGrid">
+            <!-- Sample Product Card - Will be generated dynamically -->
+            <div class="product-card">
+                <img src="path/to/product.jpg" alt="Product Image" class="product-image">
+                <div class="product-details">
+                    <div class="product-category">Laptops</div>
+                    <h3 class="product-name">ASUS ROG Strix G15</h3>
+                    <div class="product-specs">
+                        <div class="spec-item">
+                            <span class="spec-label">Processor:</span>
+                            <span>Intel Core i7-12700H</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Graphics:</span>
+                            <span>RTX 3060 6GB</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">RAM:</span>
+                            <span>16GB DDR4</span>
+                        </div>
+                        <div class="spec-item">
+                            <span class="spec-label">Storage:</span>
+                            <span>1TB NVMe SSD</span>
+                        </div>
+                    </div>
+                    <div class="product-price">1,499.99 MAD</div>
+                    <div class="stock-status">
+                        <span>In Stock</span>
+                        <span>15 units</span>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="action-btn edit-btn">
+                            <i class="fas fa-edit"></i>
+                            Edit
+                        </button>
+                        <button class="action-btn delete-btn">
+                            <i class="fas fa-trash"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Add mobile navigation -->
+    <nav class="mobile-nav">
+        <div class="mobile-nav-grid">
+            <a href="Dashboard.html" class="mobile-nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="Products.html" class="mobile-nav-item active">
+                <i class="fas fa-shopping-bag"></i>
+                <span>Products</span>
+            </a>
+            <a href="Orders.html" class="mobile-nav-item">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Orders</span>
+            </a>
+            <a href="Customers.html" class="mobile-nav-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+            <a href="#" class="mobile-nav-item" onclick="showMore(event)">
+                <i class="fas fa-ellipsis-h"></i>
+                <span>More</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Add More Menu Modal -->
+    <div id="moreMenu" style="display: none;">
+        <a href="Analytics.html" class="mobile-nav-item">
+            <i class="fas fa-chart-bar"></i>
+            <span>Analytics</span>
+        </a>
+        <a href="#" class="mobile-nav-item text-danger" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Product</h2>
+                <button type="button" class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <!-- Update the form to explicitly set method and enctype -->
+            <form id="productForm" method="POST" enctype="multipart/form-data" onsubmit="saveProduct(event)">
+                <div class="form-group">
+                    <label class="form-label">Product Name</label>
+                    <input type="text" class="form-input" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select class="form-input" name="category" required>
+                        <option value="">Select Category</option>
+                        <option value="smartphones">Smartphones</option>
+                        <option value="laptops">Laptops</option>
+                        <option value="desktops">Desktop PCs</option>
+                        <optgroup label="PC Components">
+                            <option value="processors">Processors</option>
+                            <option value="graphics-cards">Graphics Cards</option>
+                            <option value="motherboards">Motherboards</option>
+                            <option value="ram">RAM</option>
+                            <option value="storage">Storage</option>
+                            <option value="power-supply">Power Supply</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Product Images</label>
+                    <input type="file" class="form-input" name="images" multiple accept="image/*" onchange="previewImages(event)">
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-input" name="price" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Stock</label>
+                    <input type="number" class="form-input" name="stock" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-input" name="description" rows="4"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                    <!-- Update the save button to be type="submit" -->
+                    <button type="submit" class="modal-btn btn-save">Save Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="/admin/src/js/products.js"></script>
+</body>
+
+</html>
