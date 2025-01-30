@@ -1,27 +1,62 @@
 <?php
-require_once '../DatabaseConfig.php';
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 header('Content-Type: application/json');
 
 try {
-    $db = DatabaseConfig::getInstance();
-    $query = "SELECT p.*, 
-              GROUP_CONCAT(pi.image_url) as images,
-              (SELECT COUNT(*) FROM orders_products op WHERE op.product_id = p.id) as sales
-              FROM products p
-              LEFT JOIN product_images pi ON p.id = pi.product_id
-              GROUP BY p.id";
+    require_once __DIR__ . '/Config.php';
     
-    $stmt = $db->query($query);
-    $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+    // Log connection status
+    error_log("Database connection established");
+    
+    $sql = "SELECT p.*, 
+            COALESCE(GROUP_CONCAT(pi.image_url), '') as images,
+            (SELECT image_url FROM product_images WHERE product_id = p.id AND is_primary = 1 LIMIT 1) as image_url
+            FROM products p 
+            LEFT JOIN product_images pi ON p.id = pi.product_id 
+            GROUP BY p.id";
+            
+    $result = $conn->query($sql);
+    
+    if (!$result) {
+        throw new Exception("Query failed: " . $conn->error);
+    }
+    
+    $products = [];
+    while ($row = $result->fetch_assoc()) {
+        // Fix specs JSON handling
+        if (isset($row['specs'])) {
+            // Remove any whitespace or special characters
+            $specs = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $row['specs']);
+            $decoded = json_decode($specs, true);
+            $row['specs'] = $decoded ? $decoded : new stdClass();
+        } else {
+            $row['specs'] = new stdClass();
+        }
+        $products[] = $row;
+    }
+    
+    // Log product count and first product for debugging
+    error_log("Found " . count($products) . " products");
+    if (!empty($products)) {
+        error_log("First product: " . print_r($products[0], true));
+    }
+    
     echo json_encode([
         'success' => true,
         'data' => $products
     ]);
+
 } catch (Exception $e) {
+    error_log("Error in load_products.php: " . $e->getMessage());
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()
     ]);
 }
+
+if (isset($conn)) {
+    $conn->close();
+}
+?>

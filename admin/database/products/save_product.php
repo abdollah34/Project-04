@@ -1,5 +1,5 @@
 <?php
-require_once '../DatabaseConfig.php';
+require_once 'Config.php';
 
 header('Content-Type: application/json');
 

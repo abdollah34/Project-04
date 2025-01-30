@@ -1,7 +1,7 @@
 <?php
-// Disable error reporting for production
-error_reporting(0);
-ini_set('display_errors', 0);
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 // Ensure no output before headers
 ob_start();
@@ -16,8 +16,12 @@ try {
         throw new Exception('Invalid request method');
     }
 
-    // Include database configuration
-    require_once __DIR__ . '/../config.php';
+    // Include database configuration - Fix path
+    require_once __DIR__ . '/Config.php';
+
+    // Log incoming data for debugging
+    error_log("POST data: " . print_r($_POST, true));
+    error_log("FILES data: " . print_r($_FILES, true));
 
     // Basic input validation
     if (empty($_POST['name']) || empty($_POST['category'])) {
@@ -51,7 +55,7 @@ try {
     $product_id = $conn->insert_id;
     
     // Handle image uploads
-    if (isset($_FILES['images']) && !empty($_FILES['images']['name'][0])) {
+    if (isset($_FILES['images']) && is_array($_FILES['images']['tmp_name'])) {
         $uploadDir = __DIR__ . '/../../uploads/products/';
         if (!file_exists($uploadDir)) {
             if (!mkdir($uploadDir, 0777, true)) {
@@ -60,7 +64,7 @@ try {
         }
 
         foreach ($_FILES['images']['tmp_name'] as $key => $tmp_name) {
-            if (!empty($tmp_name)) {
+            if (!empty($tmp_name) && is_uploaded_file($tmp_name)) {
                 $fileName = time() . '_' . basename($_FILES['images']['name'][$key]);
                 $filePath = $uploadDir . $fileName;
                 
@@ -91,10 +95,14 @@ try {
     ]);
 
 } catch (Exception $e) {
+    // Log the error
+    error_log("Error in add_product.php: " . $e->getMessage());
+    
     // Error response
     echo json_encode([
         'success' => false,
-        'message' => $e->getMessage()
+        'message' => $e->getMessage(),
+        'debug' => error_get_last()
     ]);
 }
 

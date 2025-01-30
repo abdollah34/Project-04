@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
-$username = "root";  // Replace with your database username
-$password = "";      // Replace with your database password
-$dbname = "tech_store";
+$username = "u862171013_prod";  // Replace with your database username
+$password = "UcooW[j9";      // Replace with your database password
+$dbname = "u862171013_product";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);

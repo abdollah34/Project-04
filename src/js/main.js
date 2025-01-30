@@ -1,60 +1,6 @@
 // App State
 const state = {
-    products: [{
-            id: 1,
-            name: "iPhone 14 Pro Max",
-            price: 14999.99,
-            image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-14-pro-finish-select-202209-6-7inch-deeppurple?wid=800&hei=800&fmt=jpeg&qlt=90",
-            description: "Latest iPhone with Dynamic Island, 48MP camera, A16 Bionic chip",
-            category: "smartphones",
-            rating: 4.8
-        },
-        {
-            id: 2,
-            name: "Samsung Galaxy S23 Ultra",
-            price: 13499.99,
-            image: "https://fdn2.gsmarena.com/vv/pics/samsung/samsung-galaxy-s23-ultra-5g-1.jpg",
-            description: "200MP camera, S Pen, Snapdragon 8 Gen 2",
-            category: "smartphones",
-            rating: 4.7
-        },
-        {
-            id: 3,
-            name: "MacBook Pro 16\"",
-            price: 24999.99,
-            image: "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/mbp16-spacegray-select-202301?wid=800&hei=800&fmt=jpeg&qlt=90",
-            description: "M2 Pro chip, 32GB RAM, 1TB SSD, 16-inch Liquid Retina XDR",
-            category: "laptops",
-            rating: 4.9
-        },
-        {
-            id: 4,
-            name: "Samsung QLED 4K TV",
-            price: 9999.99,
-            image: "https://images.samsung.com/is/image/samsung/p6pim/levant/qe65q80cafxzn/gallery/levant-qled-q80c-qe65q80cafxzn-536688183?$1300_1038_PNG$",
-            description: "65\" Smart TV with Quantum Processor, HDR",
-            category: "tvs",
-            rating: 4.6
-        },
-        {
-            id: 5,
-            name: "Sony WH-1000XM4",
-            price: 3499.99,
-            image: "https://media.ldlc.com/r1600/ld/products/00/05/74/25/LD0005742587_1.jpg",
-            description: "Industry-leading noise cancellation, 30-hour battery",
-            category: "accessories",
-            rating: 4.8
-        },
-        {
-            id: 6,
-            name: "Gaming PC RTX 4090",
-            price: 39999.99,
-            image: "https://static.gigabyte.com/StaticFile/Image/Global/01b62da85fc30dd8e5c6d458084eec80/Product/32447/Png",
-            description: "NVIDIA RTX 4090, Intel i9, 64GB RAM, 2TB NVMe",
-            category: "computers",
-            rating: 4.9
-        }
-    ],
+    products: [],
     cart: [],
     filters: {
         category: 'all',
@@ -62,6 +8,18 @@ const state = {
         searchQuery: ''
     }
 };
+
+// Add fetch function
+async function fetchProducts() {
+    try {
+        const response = await fetch('../admin/database/products/get_products.php');
+        const data = await response.json();
+        state.products = data;
+        productDisplay.init();
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+}
 
 // Cart Management
 const cart = {
@@ -235,7 +193,7 @@ function addToCartFromModal() {
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
-    productDisplay.init();
+    fetchProducts();
     cart.updateCartUI(); // Initialize cart UI on load
 
     // Modal handling

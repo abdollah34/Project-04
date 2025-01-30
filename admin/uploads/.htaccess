@@ -1,0 +1,8 @@
+Options -Indexes
+<FilesMatch "(?i)\.(php|php3?|phtml)$">
+    Require all denied
+</FilesMatch>
+
+<FilesMatch "(?i)\.(jpg|jpeg|png|gif|webp)$">
+    Require all granted
+</FilesMatch>
