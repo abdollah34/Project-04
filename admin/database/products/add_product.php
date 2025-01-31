@@ -34,19 +34,22 @@ try {
     $price = floatval($_POST['price']);
     $stock = intval($_POST['stock']);
     $description = strip_tags(trim($_POST['description'] ?? ''));
+    
+    // Handle specifications
+    $specs = isset($_POST['specs']) ? $_POST['specs'] : '{}';
 
     // Validate numeric values
     if ($price <= 0 || $stock < 0) {
         throw new Exception('Invalid price or stock value');
     }
 
-    // Database insertion
-    $stmt = $conn->prepare("INSERT INTO products (name, category, price, stock, description) VALUES (?, ?, ?, ?, ?)");
+    // Database insertion with specs
+    $stmt = $conn->prepare("INSERT INTO products (name, category, price, stock, description, specs) VALUES (?, ?, ?, ?, ?, ?)");
     if (!$stmt) {
         throw new Exception($conn->error);
     }
 
-    $stmt->bind_param("ssdis", $name, $category, $price, $stock, $description);
+    $stmt->bind_param("ssddss", $name, $category, $price, $stock, $description, $specs);
     
     if (!$stmt->execute()) {
         throw new Exception($stmt->error);

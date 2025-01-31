@@ -25,12 +25,9 @@ try {
     
     $products = [];
     while ($row = $result->fetch_assoc()) {
-        // Fix specs JSON handling
-        if (isset($row['specs'])) {
-            // Remove any whitespace or special characters
-            $specs = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $row['specs']);
-            $decoded = json_decode($specs, true);
-            $row['specs'] = $decoded ? $decoded : new stdClass();
+        // Parse specs JSON
+        if ($row['specs']) {
+            $row['specs'] = json_decode($row['specs'], true) ?? new stdClass();
         } else {
             $row['specs'] = new stdClass();
         }

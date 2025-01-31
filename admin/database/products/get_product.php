@@ -16,22 +16,38 @@ try {
     // Log the request
     error_log("Fetching product ID: " . $productId);
     
-    $stmt = $conn->prepare("SELECT * FROM products WHERE id = ?");
+    $stmt = $conn->prepare("SELECT p.*, GROUP_CONCAT(pi.image_url) as images 
+                           FROM products p 
+                           LEFT JOIN product_images pi ON p.id = pi.product_id 
+                           WHERE p.id = ?
+                           GROUP BY p.id");
+    
     $stmt->bind_param("i", $productId);
     $stmt->execute();
     $result = $stmt->get_result();
     
-    if ($product = $result->fetch_assoc()) {
-        // Log the found product
-        error_log("Found product: " . print_r($product, true));
-        
-        echo json_encode([
-            'success' => true,
-            'data' => $product
-        ]);
-    } else {
+    if ($result->num_rows === 0) {
         throw new Exception('Product not found');
     }
+
+    $product = $result->fetch_assoc();
+    
+    // Parse specs JSON
+    if ($product['specs']) {
+        $product['specs'] = json_decode($product['specs'], true) ?? new stdClass();
+    }
+    
+    // Parse images
+    if ($product['images']) {
+        $product['images'] = explode(',', $product['images']);
+    } else {
+        $product['images'] = [];
+    }
+
+    echo json_encode([
+        'success' => true,
+        'data' => $product
+    ]);
 
 } catch (Exception $e) {
     error_log("Error in get_product.php: " . $e->getMessage());

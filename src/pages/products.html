@@ -14,8 +14,11 @@
 <body>
     <header class="glass-card">
         <nav>
-            <div class="logo floating">
-                <a href="../../index.html">Electro Tinejdad</a>
+            <div class="logo">
+                <h1>
+                    <span class="brand-name">Electro</span>
+                    <span class="brand-location">Tinejdad</span>
+                </h1>
             </div>
             <div class="nav-center">
                 <ul class="nav-links">
@@ -41,7 +44,7 @@
         <section class="products-section">
             <div class="filter-sidebar">
                 <h3>Categories</h3>
-                <div class="filter-group">
+                <div class="filter-group" id="category-filters">
                     <label class="filter-item">
                         <input type="checkbox" name="category" value="smartphones">
                         Smartphones
@@ -51,6 +54,14 @@
                         Laptops
                     </label>
                     <label class="filter-item">
+                        <input type="checkbox" name="category" value="desktops">
+                        Desktops
+                    </label>
+                    <label class="filter-item">
+                        <input type="checkbox" name="category" value="hardware">
+                        Hardware
+                    </label>
+                    <label class="filter-item">
                         <input type="checkbox" name="category" value="accessories">
                         Accessories
                     </label>
@@ -58,14 +69,14 @@
 
                 <h3>Price Range</h3>
                 <div class="price-range">
-                    <input type="range" min="0" max="10000" value="5000" class="price-slider">
+                    <input type="range" min="0" max="50000" value="25000" class="price-slider" id="price-slider">
                     <div class="price-inputs">
-                        <input type="number" class="min-price" placeholder="Min">
-                        <input type="number" class="max-price" placeholder="Max">
+                        <input type="number" class="min-price" id="min-price" placeholder="Min" min="0">
+                        <input type="number" class="max-price" id="max-price" placeholder="Max" max="50000">
                     </div>
                 </div>
 
-                <button class="apply-filters">Apply Filters</button>
+                <button class="apply-filters" id="apply-filters">Apply Filters</button>
             </div>
 
             <div class="products-container">
@@ -95,18 +106,33 @@
             <div class="modal-body">
                 <div class="product-detail-grid">
                     <div class="product-detail-image">
-                        <img src="" alt="" id="modal-product-image">
+                        <!-- Add image gallery container -->
+                        <div class="image-gallery">
+                            <div class="main-image">
+                                <button class="gallery-nav prev"><i class="fas fa-chevron-left"></i></button>
+                                <img src="" alt="" id="modal-product-image">
+                                <button class="gallery-nav next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="image-thumbnails" id="modal-image-thumbnails">
+                                <!-- Thumbnails will be added here -->
+                            </div>
+                        </div>
                     </div>
                     <div class="product-detail-info">
                         <h2 id="modal-product-name"></h2>
                         <div class="price" id="modal-product-price"></div>
                         <p class="description" id="modal-product-description"></p>
-                        <div class="product-actions">
-                            <div class="quantity">
-                                <button class="qty-btn" data-action="decrease">-</button>
-                                <input type="number" value="1" min="1" max="99">
-                                <button class="qty-btn" data-action="increase">+</button>
+
+                        <!-- Specs section -->
+                        <div class="specs-section">
+                            <h4>Specifications</h4>
+                            <div class="specs-grid" id="modal-product-specs">
+                                <!-- Specs will be dynamically added here -->
                             </div>
+                        </div>
+
+                        <!-- Actions section -->
+                        <div class="product-actions">
                             <button class="add-to-cart-btn">Add to Cart</button>
                         </div>
                     </div>
@@ -153,6 +179,7 @@
         <a href="contact.html"><i class="fas fa-envelope"></i><span>Contact</span></a>
     </nav>
 
+    <!-- Update script paths -->
     <script src="../js/main.js"></script>
     <script src="../js/products.js"></script>
 </body>

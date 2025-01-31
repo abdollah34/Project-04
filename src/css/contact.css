@@ -554,20 +554,18 @@ nav {
     }
 }
 
-
-}
 .nav-right {
     gap: 0.5rem;
 }
+
 .cart-icon {
     font-size: 1.4rem;
 }
+
 .cart-icon[data-count]:after {
     font-size: 0.6rem;
     min-width: 16px;
     height: 16px;
     top: -6px;
     right: -6px;
-}
-
 }
